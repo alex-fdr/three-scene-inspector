@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Scene Inspector</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--tp-base-font-family);
+      background-color: var(--tp-container-background-color);
+      color: var(--tp-button-foreground-color);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #app-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Make sure canvas takes full viewport */
+     #app-container > canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <div id="panels-container">
+      <div id="hierarchy-panel"></div>
+      <div id="property-panel"></div>
+    </div>
+  </div>
+
+  <script type="module" src="demo/index.ts"></script>
+</body>
+</html>

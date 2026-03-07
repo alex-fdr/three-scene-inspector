@@ -1,0 +1,63 @@
+{
+  "name": "@alexfdr/three-scene-inspector",
+  "version": "1.0.0",
+  "description": "A debugging tool that displays a Three.js scene hierarchy with an interactive property inspector using Tweakpane",
+  "license": "ISC",
+  "author": "alexfdr",
+  "type": "module",
+  "main": "./dist/three-scene-inspector.umd.js",
+  "module": "./dist/three-scene-inspector.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/three-scene-inspector.es.js",
+      "require": "./dist/three-scene-inspector.umd.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "three",
+    "threejs",
+    "three.js",
+    "inspector",
+    "debugger",
+    "debugging",
+    "scene-graph",
+    "hierarchy",
+    "tweakpane",
+    "dev-tools",
+    "game-development"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexfdr/three-scene-inspector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alexfdr/three-scene-inspector/issues"
+  },
+  "homepage": "https://github.com/alexfdr/three-scene-inspector#readme",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "three": "^0.183.2",
+    "tweakpane": "^4.0.0",
+    "tweakpane-plugin-media": "^1.0.7"
+  },
+  "devDependencies": {
+    "@tweakpane/core": "^2.0.5",
+    "@types/node": "^20.19.30",
+    "@types/three": "^0.183.1",
+    "tweakpane": "^4.0.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  }
+}

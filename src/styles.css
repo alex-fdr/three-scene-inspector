@@ -1,0 +1,291 @@
+/* Three.js Scene Inspector Styles */
+
+:root {
+  /* Base */
+  --tp-base-font-family: monospace;
+  --tp-base-background-color: hsl(215, 20%, 10%);
+  /* --tp-base-shadow-color: hsla(115, 40%, 10%, 1.0); */
+  --tp-base-border-radius: 0px;
+
+  /* Buttons */
+  --tp-button-background-color: hsl(215, 25%, 16%);
+  --tp-button-background-color-hover: hsl(215, 60%, 45%);
+  --tp-button-background-color-focus: hsl(215, 55%, 40%);
+  --tp-button-background-color-active: hsl(215, 55%, 40%);
+  --tp-button-foreground-color: hsl(210, 60%, 95%);
+
+  /* Inputs */
+  --tp-input-background-color: hsl(215, 25%, 16%);
+  --tp-input-background-color-hover: hsl(215, 60%, 45%);
+  --tp-input-background-color-focus: hsl(215, 35%, 34%);
+  --tp-input-background-color-active: hsl(218, 35%, 32%);
+  --tp-input-foreground-color: hsl(210, 50%, 90%);
+
+  /* Labels */
+  --tp-label-foreground-color: hsl(210, 50%, 90%);
+
+  /* Containers */
+  --tp-container-background-color: hsl(220, 40%, 5%);
+  --tp-container-background-color-hover: hsl(220, 25%, 10%);
+  --tp-container-background-color-focus: hsl(215, 30%, 14%);
+  --tp-container-background-color-active: hsl(220, 30%, 12%);
+  --tp-container-foreground-color: hsl(210, 40%, 88%);
+  --tp-container-horizontal-padding: 8px;
+  --tp-container-vertical-padding: 8px;
+  --tp-container-unit-size: 20px;
+  --tp-container-unit-spacing: 4px;
+
+  /* Groove (sliders, etc.) */
+  --tp-groove-foreground-color: hsl(215, 55%, 55%);
+
+  /* Monitor */
+  --tp-monitor-background-color: hsl(218, 25%, 12%);
+  --tp-monitor-foreground-color: hsl(215, 50%, 75%);
+
+  /* Blade (sub-elements) */
+  --tp-blade-border-radius: 4px;
+  --tp-blade-horizontal-padding: 6px;
+  --tp-blade-value-width: 150px;
+}
+
+.tp-rotv {
+  padding-bottom: 10px;
+}
+
+.tp-rotv_m {
+  display: none !important;
+}
+
+.tp-p2dv_b, 
+.tp-btnv_b, 
+.tp-lstv_s {
+  font-weight: normal !important;
+}
+
+#panels-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1000;
+  pointer-events: none;
+  height: 100vh;
+}
+
+#hierarchy-panel {
+  pointer-events: auto;
+  min-width: 200px;
+  max-width: 30vw;
+  height: auto;
+  /* overflow-x: auto; */
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  width: 200px;
+}
+
+#hierarchy-panel .tp-rotv {
+  background-color: var(--tp-container-background-color) !important;
+  /* width: fit-content; */
+}
+
+/* Adjust folder indentation / Folder content */
+#hierarchy-panel .tp-fldv_c {
+  padding-left: 8px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  background-color: var(--tp-container-background-color) !important;
+}
+
+/* Title / Move expand/collapse arrow to the left side (Scene Hierarchy only) */
+#hierarchy-panel .tp-fldv_t {
+  font-weight: normal;
+  margin: 0 !important;
+  background-color: transparent !important;
+  min-height: 24px;
+  display: flex !important;
+  align-items: center;
+  padding-left: 16px;
+  line-height: 1.5;
+}
+
+/* Remove gap between folder title and first child */
+#hierarchy-panel .tp-fldv_c > .tp-btnv:first-child,
+#hierarchy-panel .tp-fldv_c > .tp-fldv:first-child {
+  margin-top: 0 !important;
+}
+
+/* Add vertical spacing */
+#hierarchy-panel .tp-fldv {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+}
+
+#hierarchy-panel .tp-btnv {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#hierarchy-panel .tp-lblv.tp-lblv-nol {
+  margin-top: 0 !important;
+}
+
+#hierarchy-panel .tp-fldv_i {
+  display: none !important;
+}
+
+#hierarchy-panel .tp-fldv_c > .tp-cntv+*:not(.tp-v-hidden) {
+  margin-top: 0;
+}
+
+/* Selected item in scene tree */
+#hierarchy-panel .scene-tree-selected {
+  background-color: var(--tp-button-background-color-active) !important;
+}
+
+#hierarchy-panel .scene-tree-selected:hover {
+  background-color: var(--tp-button-background-color-hover) !important;
+}
+
+#hierarchy-panel .tp-fldv_b,
+#hierarchy-panel .tp-btnv_b {
+  border-radius: 0 !important;
+  padding-right: 8px !important;
+  min-height: 24px;
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box;
+}
+
+#hierarchy-panel .tp-fldv_b {
+  cursor: pointer !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+#hierarchy-panel .tp-btnv_b {
+  padding-left: 16px !important;
+  background: none !important;
+  text-align: left;
+}
+
+/* Override background for selected leaf nodes */
+#hierarchy-panel .tp-btnv_b.scene-tree-selected {
+  background-color: var(--tp-button-background-color-active) !important;
+}
+
+#hierarchy-panel .tp-fldv_b:hover:not(.scene-tree-selected),
+#hierarchy-panel .tp-btnv_b:hover:not(.scene-tree-selected) {
+  background-color: var(--tp-button-background-color-hover) !important;
+}
+
+#hierarchy-panel .tp-fldv_m {
+  position: absolute !important;
+  left: 0 !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  cursor: pointer !important;
+  padding: 0 12px !important;
+  margin: -1px 0 0 !important;
+  background: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Replace arrow icon with unicode symbols */
+#hierarchy-panel .tp-fldv_m svg {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+#hierarchy-panel .tp-fldv_m::before {
+  font-size: 18px;
+  color: var(--tp-label-fg);
+  line-height: 1;
+  font-weight: bolder;
+  font-family: monospace;
+  display: block !important;
+  position: relative !important;
+}
+
+#hierarchy-panel .tp-fldv.tp-fldv-expanded .tp-fldv_m::before {
+  content: '−' !important;
+}
+
+#hierarchy-panel .tp-fldv:not(.tp-fldv-expanded) .tp-fldv_m::before {
+  content: '+' !important;
+}
+
+#property-panel {
+  pointer-events: auto;
+  max-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 300px;
+  align-self: flex-start;
+  scrollbar-gutter: stable;
+  background-color: var(--tp-base-background-color);
+}
+
+#property-panel .tp-rotv {
+  background-color: var(--tp-container-background-color) !important;
+}
+
+#property-panel .tp-fldv_b {
+  background-color: var(--tp-base-background-color) !important;
+}
+
+#property-panel .tp-fldv_t {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* Darker select dropdown */
+#property-panel .tp-lstv_s option {
+  background-color: var(--tp-input-background-color) !important;
+  color: var(--tp-input-foreground-color) !important;
+}
+
+/* disable point2d picker */
+#property-panel .tp-p2dv_b {
+  display: none !important;
+}
+
+#property-panel .tp-lblv_l {
+  padding-left: 0 !important;
+}
+
+#property-panel .tp-fldv_m {
+  display: none !important;
+}
+
+/* Custom scrollbar styles */
+#hierarchy-panel::-webkit-scrollbar,
+#property-panel::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+#hierarchy-panel::-webkit-scrollbar-track,
+#property-panel::-webkit-scrollbar-track {
+  background: var(--tp-container-background-color);
+}
+
+#hierarchy-panel::-webkit-scrollbar-thumb,
+#property-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+#hierarchy-panel::-webkit-scrollbar-thumb:hover,
+#property-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
