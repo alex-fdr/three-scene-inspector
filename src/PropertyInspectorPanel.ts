@@ -1,20 +1,25 @@
 import { Pane, FolderApi } from 'tweakpane';
 import { CATEGORIES } from './properties';
 import { PropertyBinder } from './PropertyBinder';
-import { Object3D } from 'three';
+import { Object3D, Scene } from 'three';
 import * as TweakpanePluginMedia from 'tweakpane-plugin-media';
+import { HelperManager } from './HelperManager';
 
 export class PropertyInspectorPanel {
   readonly pane: Pane;
   folders: Map<string, FolderApi> = new Map();
   selectedObject: Object3D | null = null;
   propertyBinder: PropertyBinder;
+  helperManager: HelperManager;
   private propertiesTriggeringRefresh: string[] = [];
+  private propertiesTriggeringRebuild: string[] = ['castShadow'];
   private isRefreshing = false;
 
-  constructor(container: HTMLElement, onPropertyChange?: (target: Object3D) => void) {
+  constructor(container: HTMLElement, scene: Scene, onPropertyChange?: (target: Object3D) => void) {
     this.pane = new Pane({ container, title: 'Properties' });
     this.pane.registerPlugin(TweakpanePluginMedia);
+
+    this.helperManager = new HelperManager(scene);
 
     this.propertyBinder = new PropertyBinder((target, key) => {
       if (this.isRefreshing) {
@@ -23,6 +28,10 @@ export class PropertyInspectorPanel {
 
       if (this.propertiesTriggeringRefresh.includes(key)) {
         this.pane.refresh();
+      }
+
+      if (this.propertiesTriggeringRebuild.includes(key)) {
+        setTimeout(() => this.refresh(), 0);
       }
 
       onPropertyChange?.(target);
@@ -44,11 +53,28 @@ export class PropertyInspectorPanel {
       return;
     }
 
+    this.addProperies(this.selectedObject);
+    this.addHelpersFolder(this.selectedObject);
+
+    this.isRefreshing = false;
+  }
+
+  update(): void {
+    this.helperManager.update();
+  }
+
+  dispose(): void {
+    this.clearBindings();
+    this.pane.dispose();
+    this.helperManager.dispose();
+  }
+
+  private addProperies(obj: Object3D): void {
     for (const [categoryName, properties] of Object.entries(CATEGORIES)) {
       const folder = this.pane.addFolder({ title: categoryName, expanded: true });
 
       for (const property of properties) {
-        this.propertyBinder.bind(folder, this.selectedObject, property);
+        this.propertyBinder.bind(folder, obj, property);
       }
 
       if (folder.children.length === 0) {
@@ -57,13 +83,17 @@ export class PropertyInspectorPanel {
         this.folders.set(categoryName, folder);
       }
     }
-
-    this.isRefreshing = false;
   }
 
-  dispose(): void {
-    this.clearBindings();
-    this.pane.dispose();
+  private addHelpersFolder(obj: Object3D): void {
+    const helpersFolder = this.pane.addFolder({ title: 'Helpers', expanded: true });
+    this.helperManager.addHelperToggles(helpersFolder, obj);
+    
+    if (helpersFolder.children.length === 0) {
+      helpersFolder.dispose();
+    } else {
+      this.folders.set('Helpers', helpersFolder);
+    }
   }
 
   private clearBindings(): void {
