@@ -24,21 +24,48 @@ export class SceneHierarchyPanel {
   }
 
   private createSearchElement(): HTMLInputElement {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'scene-tree-search-wrapper';
+
     const searchElement = document.createElement('input');
     searchElement.type = 'text';
     searchElement.placeholder = 'Search...';
     searchElement.className = 'scene-tree-search';
 
+    const clearButton = this.createClearButton(searchElement);
+
     searchElement.addEventListener('input', () => {
+      clearButton.hidden = searchElement.value.length === 0;
       if (this.currentScene) {
         this.rebuildTree();
       }
     });
 
+    wrapper.appendChild(searchElement);
+    wrapper.appendChild(clearButton);
+
     const titleBtn = this.pane.element.querySelector('.tp-rotv_b')!;
-    titleBtn.insertAdjacentElement('afterend', searchElement);
+    titleBtn.insertAdjacentElement('afterend', wrapper);
 
     return searchElement;
+  }
+
+  private createClearButton(searchElement: HTMLInputElement): HTMLButtonElement {
+    const clearButton = document.createElement('button');
+    clearButton.className = 'scene-tree-search-clear';
+    clearButton.textContent = '×';
+    clearButton.hidden = true;
+
+    clearButton.addEventListener('click', () => {
+      searchElement.value = '';
+      clearButton.hidden = true;
+      searchElement.focus();
+      if (this.currentScene) {
+        this.rebuildTree();
+      }
+    });
+
+    return clearButton;
   }
 
   refresh(scene: Scene): void {
@@ -53,7 +80,7 @@ export class SceneHierarchyPanel {
   }
 
   dispose(): void {
-    this.searchElement.remove();
+    this.searchElement.parentElement?.remove();
     this.pane.dispose();
   }
 

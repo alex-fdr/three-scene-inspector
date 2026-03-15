@@ -94,6 +94,7 @@ export declare class SceneHierarchyPanel {
     private get searchQuery();
     constructor(container: HTMLElement, onSelectionChange: ObjectSelectionHandler);
     private createSearchElement;
+    private createClearButton;
     refresh(scene: Scene): void;
     selectObject(obj: Object3D): void;
     dispose(): void;
