@@ -44,6 +44,15 @@ inspector.excludeFromTree('mixamorig', 'BatchedRenderer');
 
 Displays editable properties for the selected object, organized into categories. Add or modify categories by editing `src/properties.ts`.
 
+Use 'addProperties' to add new properties to a one of the existing caterogies:
+
+```typescript
+inspector.addProperties('Material', [
+  { path: 'material.normalMap', type: 'image', label: 'normal' },
+  { path: 'material.bumpMap', type: 'image', label: 'bump' },
+]);
+```
+
 ## Development
 
 ```bash

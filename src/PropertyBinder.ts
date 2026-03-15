@@ -180,7 +180,9 @@ export class PropertyBinder {
   }
 
   private buildBaseOptions(property: PropertyInfo): any {
-    const options: BindingParams = { needsUpdate: property.needsUpdate ?? false }
+    const options: BindingParams = { 
+      needsUpdate: property.needsUpdate ?? false 
+    }
     if (property.label) {
       options.label = property.label;
     }
