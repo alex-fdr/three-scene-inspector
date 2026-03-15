@@ -28,14 +28,6 @@ const inspector = new ThreeSceneInspector(scene);
 
 Properties are organized into categories. Add or modify categories by editing `src/properties.ts`.
 
-## API
-
-| Method | Description |
-|---|---|
-| `refresh()` | Rebuild hierarchy after scene changes |
-| `selectObject(obj: Container)` | Programmatically select an object |
-| `dispose()` | Remove all panels and listeners |
-
 ## Development
 
 ```bash
