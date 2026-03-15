@@ -85,10 +85,11 @@ export declare class SceneHierarchyPanel {
     buttons: Map<Object3D, ButtonApi>;
     selectedObject: Object3D | null;
     private currentScene;
-    private searchQuery;
-    private search;
+    private searchElement;
     private folderObjects;
+    private get searchQuery();
     constructor(container: HTMLElement, onSelectionChange: ObjectSelectionHandler);
+    private createSearchElement;
     refresh(scene: Scene): void;
     selectObject(obj: Object3D): void;
     dispose(): void;

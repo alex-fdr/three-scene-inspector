@@ -1,6 +1,5 @@
 import { Object3D, Scene } from 'three';
 import { Pane, ButtonApi, FolderApi } from 'tweakpane';
-import { SceneTreeSearch } from './SceneTreeSearch';
 
 type ObjectSelectionHandler = (obj: Object3D) => void;
 
@@ -11,18 +10,34 @@ export class SceneHierarchyPanel {
   selectedObject: Object3D | null = null;
 
   private currentScene: Scene | null = null;
-  private searchQuery = '';
-  private search: SceneTreeSearch;
+  private searchElement: HTMLInputElement;
   private folderObjects: Set<Object3D> = new Set();
+
+  private get searchQuery(): string {
+    return this.searchElement.value.trim();
+  }
 
   constructor(container: HTMLElement, private onSelectionChange: ObjectSelectionHandler) {
     this.pane = new Pane({ container, title: 'Scene Tree' });
-    this.search = new SceneTreeSearch(this.pane.element, (query) => {
-      this.searchQuery = query;
+    this.searchElement = this.createSearchElement();
+  }
+
+  private createSearchElement(): HTMLInputElement {
+    const searchElement = document.createElement('input');
+    searchElement.type = 'text';
+    searchElement.placeholder = 'Search...';
+    searchElement.className = 'scene-tree-search';
+
+    searchElement.addEventListener('input', () => {
       if (this.currentScene) {
         this.rebuildTree();
       }
     });
+
+    const titleBtn = this.pane.element.querySelector('.tp-rotv_b')!;
+    titleBtn.insertAdjacentElement('afterend', searchElement);
+
+    return searchElement;
   }
 
   refresh(scene: Scene): void {
@@ -37,7 +52,7 @@ export class SceneHierarchyPanel {
   }
 
   dispose(): void {
-    this.search.dispose();
+    this.searchElement.remove();
     this.pane.dispose();
   }
 
