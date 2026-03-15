@@ -6,7 +6,7 @@ A debugging tool for Three.js that displays the scene hierarchy and editable obj
 
 ## Requirements
 
-- three.js `^0.183.2`
+- three.js `^0.169.0`
 - tweakpane `^4.0.0`
 
 ## Installation

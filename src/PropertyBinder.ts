@@ -1,10 +1,10 @@
 import { FolderApi } from 'tweakpane';
 import { PropertyInfo } from './properties';
 import { Object3D } from 'three';
-import { BindingApi } from '@tweakpane/core';
+import { BindingApi, BindingParams, TpChangeEvent } from '@tweakpane/core';
 
 export class PropertyBinder {
-  constructor(private onChange: (obj: Object3D, key: string) => void) {}
+  constructor(private onChange: (key: string) => void) {}
 
   bind(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     if (!this.propertyExists(obj, property.path)) return;
@@ -50,19 +50,19 @@ export class PropertyBinder {
       options.step = property.step !== undefined ? property.step : undefined;
     }
 
-    this.addBindingWithCallback(folder, target, key, options, obj, property.needsUpdate);
+    this.addBindingWithCallback(folder, target, key, options);
   }
 
   private bindString(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
     const options = this.buildBaseOptions(property);
-    this.addBindingWithCallback(folder, target, key, options, obj, property.needsUpdate);
+    this.addBindingWithCallback(folder, target, key, options);
   }
 
   private bindBoolean(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
     const options = this.buildBaseOptions(property);
-    this.addBindingWithCallback(folder, target, key, options, obj, property.needsUpdate);
+    this.addBindingWithCallback(folder, target, key, options);
   }
 
   private bindPoint(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
@@ -78,25 +78,31 @@ export class PropertyBinder {
       y: { min, max, step },
     };
 
-    this.addBindingWithCallback(folder, target, key, options, obj, property.needsUpdate);
+    this.addBindingWithCallback(folder, target, key, options);
   }
 
   private bindColor(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
     
+    const options = { 
+      ...this.buildBaseOptions(property), 
+      view: 'color',
+    };
+
     if (typeof target[key] === 'object') {
-      const colorObj = { [key]: `#${target[key].getHexString()}` };
-      const options = { ...this.buildBaseOptions(property), view: 'color'/* , picker: 'inline'  */};
-      const binding = folder.addBinding(colorObj, key, options)
-      binding.on('change', (event) => {
+      const colorObj = { 
+        [key]: `#${target[key].getHexString()}` 
+      };
+
+      folder.addBinding(colorObj, key, options).on('change', (event) => {
         target[key].set(event.value);
+        this.onChange(key);
       });
       
       return;
     }
 
-    const options = { ...this.buildBaseOptions(property), view: 'color' };
-    this.addBindingWithCallback(folder, target, key, options, obj, property.needsUpdate);
+    this.addBindingWithCallback(folder, target, key, options);
   }
 
   private bindList(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
@@ -115,7 +121,16 @@ export class PropertyBinder {
       }, {} as Record<string, any>);
     }
 
-    this.addBindingWithCallback(folder, target, key, options, obj, property.needsUpdate, property.onChange);
+    const binding = this.addBindingWithCallback(folder, target, key, options);
+
+    // special case to handle two update two properties at once
+    if (key === 'wrapS' || key === 'wrapT') {
+      binding.on('change', (event) => {
+        target.wrapS = event.value;
+        target.wrapT = event.value;
+        target.needsUpdate = true;
+      })
+    }
   }
 
   private bindReadonly(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
@@ -127,7 +142,11 @@ export class PropertyBinder {
       value = '(unnamed)';
     }
 
-    const options = { ...this.buildBaseOptions(property), readonly: true };
+    const options = { 
+      ...this.buildBaseOptions(property), 
+      readonly: true 
+    };
+    
     folder.addBinding({ [name]: value }, name, options);
   }
 
@@ -149,19 +168,31 @@ export class PropertyBinder {
     const key = parts[parts.length - 1];
     return { target, key };
   }
-
-  private buildBaseOptions(property: PropertyInfo): any {
-    return property.label ? { label: property.label } : {};
+  
+  private getValueFromPath(obj: any, path: string, excludeLast = false): any {
+    const parts = path.split('.');
+    const length = excludeLast ? parts.length - 1 : parts.length;
+    let current = obj;
+    for (let i = 0; i < length; i++) {
+      current = current?.[parts[i]];
+    }
+    return current;
   }
 
-  private addBindingWithCallback(folder: FolderApi, target: any, key: string, options: any, obj: Object3D, needsUpdate?: boolean, onChangeCallback?: (...args: any[]) => void): BindingApi<unknown> {
+  private buildBaseOptions(property: PropertyInfo): any {
+    const options: BindingParams = { needsUpdate: property.needsUpdate ?? false }
+    if (property.label) {
+      options.label = property.label;
+    }
+    return options;
+  }
+
+  private addBindingWithCallback(folder: FolderApi, target: any, key: string, options: any): BindingApi<unknown> {
     const binding = folder.addBinding(target, key, options);
 
     binding.on('change', (event) => {
-      this.onChange!(obj, key);
-      onChangeCallback?.(target, event.value);
-      
-      if (needsUpdate) {
+      this.onChange(key);
+      if (options.needsUpdate) {
         target.needsUpdate = true;
       }
     });
@@ -179,13 +210,4 @@ export class PropertyBinder {
     return current != null && parts[parts.length - 1] in current;
   }
 
-  private getValueFromPath(obj: any, path: string, excludeLast = false): any {
-    const parts = path.split('.');
-    const length = excludeLast ? parts.length - 1 : parts.length;
-    let current = obj;
-    for (let i = 0; i < length; i++) {
-      current = current?.[parts[i]];
-    }
-    return current;
-  }
 }

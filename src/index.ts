@@ -27,7 +27,7 @@ export class ThreeSceneInspector {
     const { hierarchyContainer, propertyContainer } = this.createPanelContainers();
 
     this.hierarchyPanel = new SceneHierarchyPanel(hierarchyContainer, this.onObjectSelected.bind(this));
-    this.propertyPanel = new PropertyInspectorPanel(propertyContainer, this.scene, this.onPropertyChange.bind(this));
+    this.propertyPanel = new PropertyInspectorPanel(propertyContainer, this.scene);
 
     this.refresh();
   }
@@ -77,9 +77,6 @@ export class ThreeSceneInspector {
 
   private onObjectSelected(obj: Object3D): void {
     this.propertyPanel.setSelectedObject(obj);
-  }
-
-  private onPropertyChange(obj: Object3D): void {
   }
 }
 

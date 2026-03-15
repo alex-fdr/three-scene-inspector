@@ -7,6 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
+  resolve: {
+    dedupe: ['three'],
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
@@ -15,11 +18,12 @@ export default defineConfig({
       formats: ['es', 'umd']
     },
     rollupOptions: {
-      external: ['three', 'tweakpane'],
+      external: ['three', 'tweakpane', 'tweakpane-plugin-media'],
       output: {
         globals: {
           'three': 'THREE',
-          'tweakpane': 'Tweakpane'
+          'tweakpane': 'Tweakpane',
+          'tweakpane-plugin-media': 'TweakpanePluginMedia'
         },
       }
     },

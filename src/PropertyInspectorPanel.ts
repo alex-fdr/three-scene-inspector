@@ -15,13 +15,13 @@ export class PropertyInspectorPanel {
   private propertiesTriggeringRebuild: string[] = ['castShadow'];
   private isRefreshing = false;
 
-  constructor(container: HTMLElement, scene: Scene, onPropertyChange?: (target: Object3D) => void) {
+  constructor(container: HTMLElement, scene: Scene) {
     this.pane = new Pane({ container, title: 'Properties' });
     this.pane.registerPlugin(TweakpanePluginMedia);
 
     this.helperManager = new HelperManager(scene);
 
-    this.propertyBinder = new PropertyBinder((target, key) => {
+    this.propertyBinder = new PropertyBinder((key) => {
       if (this.isRefreshing) {
         return;
       }
@@ -33,8 +33,6 @@ export class PropertyInspectorPanel {
       if (this.propertiesTriggeringRebuild.includes(key)) {
         setTimeout(() => this.refresh(), 0);
       }
-
-      onPropertyChange?.(target);
     });
   }
 

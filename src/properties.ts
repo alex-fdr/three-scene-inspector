@@ -1,4 +1,4 @@
-import { BackSide, ClampToEdgeWrapping, DoubleSide, FrontSide, MirroredRepeatWrapping, RepeatWrapping } from 'three';
+import { BackSide, ClampToEdgeWrapping, DoubleSide, FrontSide, LinearSRGBColorSpace, MirroredRepeatWrapping, NoColorSpace, RepeatWrapping, SRGBColorSpace } from 'three';
 
 export type Category = 'Object' | 'Transform' | 'Material' | 'Texture' | 'Shadow';
 export type CategorizedProperties = Partial<Record<Category, PropertyInfo[]>>;
@@ -11,7 +11,6 @@ export type PropertyInfo = {
   step?: number;
   options?: number [] | string[] | { text: string; value: any }[];
   needsUpdate?: boolean;
-  onChange?: (...val: any[]) => void;
 }
 
 export const CATEGORIES: CategorizedProperties = {
@@ -27,11 +26,11 @@ export const CATEGORIES: CategorizedProperties = {
     { path: 'receiveShadow', type: 'boolean' },
   ],
 
-  // Transform: [
-  //   { path: 'position', type: 'point' },
-  //   { path: 'rotation', type: 'point' },
-  //   { path: 'scale', type: 'point' },
-  // ],
+  Transform: [
+    { path: 'position', type: 'point' },
+    { path: 'rotation', type: 'point' },
+    { path: 'scale', type: 'point' },
+  ],
 
   Material: [
     { path: 'material.color', type: 'color' },
@@ -39,6 +38,7 @@ export const CATEGORIES: CategorizedProperties = {
     { path: 'material.specular', type: 'color' },
     { path: 'material.transparent', type: 'boolean', needsUpdate: true },
     { path: 'material.opacity', type: 'number', min: 0, max: 1 },
+    { path: 'material.wireframe', type: 'boolean' },
     { path: 'material.side', type: 'list', options: [
       { text: 'FrontSide', value: FrontSide },
       { text: 'BackSide', value: BackSide },
@@ -56,17 +56,13 @@ export const CATEGORIES: CategorizedProperties = {
         { text: 'ClampToEdgeWrapping', value: ClampToEdgeWrapping }, 
         { text: 'MirroredRepeatWrapping', value: MirroredRepeatWrapping }
       ],
-      onChange: (texture, value) => {
-        texture.wrapS = value;
-        texture.wrapT = value;
-        texture.needsUpdate = true;
-      }
     },
+    { path: 'material.map.colorSpace', type: 'list', label: 'color space', options: [
+      { text: 'NoColorSpace', value: NoColorSpace },
+      { text: 'SRGBColorSpace', value: SRGBColorSpace },
+      { text: 'LinearSRGBColorSpace', value: LinearSRGBColorSpace },
+    ], needsUpdate: true },
     { path: 'material.map', type: 'image' }
     // { path: 'material.map.colorSpace'}
   ]
 };
-
-export const RENDERER_PROPERTIES: PropertyInfo[] = [
-  { path: 'toneExp', type: 'number', min: 0, max: 10 }
-]
