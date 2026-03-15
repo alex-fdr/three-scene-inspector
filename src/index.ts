@@ -64,6 +64,10 @@ export class ThreeSceneInspector {
     this.hierarchyPanel.selectObject(obj);
   }
 
+  excludeFromTree(...labels: string[]): void {
+    this.hierarchyPanel.excludeFromTree(...labels);
+  }
+
   dispose(): void {
     this.hierarchyPanel.dispose();
     this.propertyPanel.dispose();

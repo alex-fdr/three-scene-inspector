@@ -87,12 +87,14 @@ export declare class SceneHierarchyPanel {
     private currentScene;
     private searchElement;
     private folderObjects;
+    private excludeLabels;
     private get searchQuery();
     constructor(container: HTMLElement, onSelectionChange: ObjectSelectionHandler);
     private createSearchElement;
     refresh(scene: Scene): void;
     selectObject(obj: Object3D): void;
     dispose(): void;
+    excludeFromTree(...labels: string[]): void;
     private rebuildTree;
     private buildHierarchy;
     private objectOrDescendantMatches;
@@ -117,6 +119,7 @@ export declare class ThreeSceneInspector {
     refresh(): void;
     update(): void;
     selectObject(obj: Object3D): void;
+    excludeFromTree(...labels: string[]): void;
     dispose(): void;
     private onObjectSelected;
 }

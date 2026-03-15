@@ -12,6 +12,7 @@ export class SceneHierarchyPanel {
   private currentScene: Scene | null = null;
   private searchElement: HTMLInputElement;
   private folderObjects: Set<Object3D> = new Set();
+  private excludeLabels: string[] = ['__inspector_bounding_box__'];
 
   private get searchQuery(): string {
     return this.searchElement.value.trim();
@@ -54,6 +55,11 @@ export class SceneHierarchyPanel {
   dispose(): void {
     this.searchElement.remove();
     this.pane.dispose();
+  }
+
+  excludeFromTree(...labels: string[]): void {
+    this.excludeLabels.push(...labels);
+    this.rebuildTree();
   }
 
   private rebuildTree(): void {
@@ -105,7 +111,8 @@ export class SceneHierarchyPanel {
   }
 
   private shouldSkipObject(obj: Object3D): boolean {
-    return obj.name === '__inspector_bounding_box__';
+    const label = this.createLabel(obj);
+    return this.excludeLabels.some(s => label.includes(s));
   }
 
   private getChildrenArray(obj: Object3D): Object3D[] {

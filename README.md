@@ -26,7 +26,23 @@ const scene = new Scene();
 const inspector = new ThreeSceneInspector(scene);
 ```
 
-Properties are organized into categories. Add or modify categories by editing `src/properties.ts`.
+## Features
+
+### Scene Hierarchy
+
+Displays the full scene tree. Click any node to select it and inspect its properties. The search box filters the tree by object name or type.
+
+### Filtering
+
+Use `excludeFromTree` to hide objects whose display label contains any of the provided strings:
+
+```typescript
+inspector.excludeFromTree('mixamorig', 'BatchedRenderer');
+```
+
+### Property Inspector
+
+Displays editable properties for the selected object, organized into categories. Add or modify categories by editing `src/properties.ts`.
 
 ## Development
 
