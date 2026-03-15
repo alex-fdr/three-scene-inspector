@@ -140,6 +140,40 @@
   margin-top: 0;
 }
 
+/* Sticky title */
+#hierarchy-panel .tp-rotv_b {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--tp-base-background-color);
+}
+
+/* Search input */
+#hierarchy-panel .scene-tree-search {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--tp-input-background-color);
+  color: var(--tp-input-foreground-color);
+  border: none;
+  border-bottom: 1px solid hsl(215, 20%, 18%);
+  outline: none;
+  font-family: var(--tp-base-font-family);
+  font-size: 11px;
+  padding: 4px 8px;
+  position: sticky;
+  top: calc(var(--tp-container-unit-size) + 4px);
+  z-index: 1;
+}
+
+#hierarchy-panel .scene-tree-search:focus {
+  background-color: var(--tp-input-background-color-focus);
+}
+
+#hierarchy-panel .scene-tree-search::placeholder {
+  color: hsl(210, 20%, 50%);
+}
+
 /* Selected item in scene tree */
 #hierarchy-panel .scene-tree-selected {
   background-color: var(--tp-button-background-color-active) !important;

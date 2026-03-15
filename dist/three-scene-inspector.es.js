@@ -1,27 +1,53 @@
-import { Pane as g } from "tweakpane";
-import { RepeatWrapping as u, ClampToEdgeWrapping as b, MirroredRepeatWrapping as m, NoColorSpace as f, SRGBColorSpace as v, LinearSRGBColorSpace as y, FrontSide as k, BackSide as x, DoubleSide as w, BoxHelper as C, CameraHelper as h, DirectionalLightHelper as S } from "three";
-import * as B from "tweakpane-plugin-media";
-const _ = ':root{--tp-base-font-family: monospace;--tp-base-background-color: hsl(215, 20%, 10%);--tp-base-border-radius: 0px;--tp-button-background-color: hsl(215, 25%, 16%);--tp-button-background-color-hover: hsl(215, 60%, 45%);--tp-button-background-color-focus: hsl(215, 55%, 40%);--tp-button-background-color-active: hsl(215, 55%, 40%);--tp-button-foreground-color: hsl(210, 60%, 95%);--tp-input-background-color: hsl(215, 25%, 16%);--tp-input-background-color-hover: hsl(215, 60%, 45%);--tp-input-background-color-focus: hsl(215, 35%, 34%);--tp-input-background-color-active: hsl(218, 35%, 32%);--tp-input-foreground-color: hsl(210, 50%, 90%);--tp-label-foreground-color: hsl(210, 50%, 90%);--tp-container-background-color: hsl(220, 40%, 5%);--tp-container-background-color-hover: hsl(220, 25%, 10%);--tp-container-background-color-focus: hsl(215, 30%, 14%);--tp-container-background-color-active: hsl(220, 30%, 12%);--tp-container-foreground-color: hsl(210, 40%, 88%);--tp-container-horizontal-padding: 8px;--tp-container-vertical-padding: 8px;--tp-container-unit-size: 20px;--tp-container-unit-spacing: 4px;--tp-groove-foreground-color: hsl(215, 55%, 55%);--tp-monitor-background-color: hsl(218, 25%, 12%);--tp-monitor-foreground-color: hsl(215, 50%, 75%);--tp-blade-border-radius: 4px;--tp-blade-horizontal-padding: 6px;--tp-blade-value-width: 150px}.tp-rotv{padding-bottom:10px}.tp-rotv_m{display:none!important}.tp-p2dv_b,.tp-btnv_b,.tp-lstv_s{font-weight:400!important}#panels-container{position:fixed;top:0;left:0;width:100vw;display:flex;justify-content:space-between;z-index:1000;pointer-events:none;height:100vh}#hierarchy-panel{pointer-events:auto;min-width:200px;max-width:30vw;height:auto;overflow-y:auto;scrollbar-gutter:stable;width:200px}#hierarchy-panel .tp-rotv{background-color:var(--tp-container-background-color)!important}#hierarchy-panel .tp-fldv_c{padding-left:8px!important;padding-top:0!important;padding-bottom:0!important;background-color:var(--tp-container-background-color)!important}#hierarchy-panel .tp-fldv_t{font-weight:400;margin:0!important;background-color:transparent!important;min-height:24px;display:flex!important;align-items:center;padding-left:16px;line-height:1.5}#hierarchy-panel .tp-fldv_c>.tp-btnv:first-child,#hierarchy-panel .tp-fldv_c>.tp-fldv:first-child{margin-top:0!important}#hierarchy-panel .tp-fldv{margin-top:0!important;margin-bottom:0!important;margin-left:0!important}#hierarchy-panel .tp-btnv{margin-top:0!important;margin-bottom:0!important}#hierarchy-panel .tp-lblv.tp-lblv-nol{margin-top:0!important}#hierarchy-panel .tp-fldv_i{display:none!important}#hierarchy-panel .tp-fldv_c>.tp-cntv+*:not(.tp-v-hidden){margin-top:0}#hierarchy-panel .scene-tree-selected{background-color:var(--tp-button-background-color-active)!important}#hierarchy-panel .scene-tree-selected:hover{background-color:var(--tp-button-background-color-hover)!important}#hierarchy-panel .tp-fldv_b,#hierarchy-panel .tp-btnv_b{border-radius:0!important;padding-right:8px!important;min-height:24px;display:flex!important;align-items:center!important;box-sizing:border-box}#hierarchy-panel .tp-fldv_b{cursor:pointer!important;width:100%!important;text-align:left!important}#hierarchy-panel .tp-btnv_b{padding-left:16px!important;background:none!important;text-align:left}#hierarchy-panel .tp-btnv_b.scene-tree-selected{background-color:var(--tp-button-background-color-active)!important}#hierarchy-panel .tp-fldv_b:hover:not(.scene-tree-selected),#hierarchy-panel .tp-btnv_b:hover:not(.scene-tree-selected){background-color:var(--tp-button-background-color-hover)!important}#hierarchy-panel .tp-fldv_m{position:absolute!important;left:0!important;right:auto!important;top:50%!important;transform:translateY(-50%)!important;cursor:pointer!important;padding:0 12px!important;margin:-1px 0 0!important;background:none!important;display:flex!important;align-items:center!important;justify-content:center!important}#hierarchy-panel .tp-fldv_m svg{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important}#hierarchy-panel .tp-fldv_m:before{font-size:18px;color:var(--tp-label-fg);line-height:1;font-weight:bolder;font-family:monospace;display:block!important;position:relative!important}#hierarchy-panel .tp-fldv.tp-fldv-expanded .tp-fldv_m:before{content:"−"!important}#hierarchy-panel .tp-fldv:not(.tp-fldv-expanded) .tp-fldv_m:before{content:"+"!important}#property-panel{pointer-events:auto;max-height:100vh;overflow-x:hidden;overflow-y:auto;width:300px;align-self:flex-start;scrollbar-gutter:stable;background-color:var(--tp-base-background-color)}#property-panel .tp-rotv{background-color:var(--tp-container-background-color)!important}#property-panel .tp-fldv_b{background-color:var(--tp-base-background-color)!important}#property-panel .tp-fldv_t{text-transform:uppercase;font-weight:700;font-size:12px}#property-panel .tp-lstv_s option{background-color:var(--tp-input-background-color)!important;color:var(--tp-input-foreground-color)!important}#property-panel .tp-p2dv_b{display:none!important}#property-panel .tp-lblv_l{padding-left:0!important}#property-panel .tp-fldv_m{display:none!important}#hierarchy-panel::-webkit-scrollbar,#property-panel::-webkit-scrollbar{width:4px;height:4px}#hierarchy-panel::-webkit-scrollbar-track,#property-panel::-webkit-scrollbar-track{background:var(--tp-container-background-color)}#hierarchy-panel::-webkit-scrollbar-thumb,#property-panel::-webkit-scrollbar-thumb{background:#fff3;border-radius:4px}#hierarchy-panel::-webkit-scrollbar-thumb:hover,#property-panel::-webkit-scrollbar-thumb:hover{background:#ffffff4d}';
+import { Pane as u } from "tweakpane";
+import { RepeatWrapping as g, ClampToEdgeWrapping as b, MirroredRepeatWrapping as m, NoColorSpace as f, SRGBColorSpace as v, LinearSRGBColorSpace as y, FrontSide as k, BackSide as x, DoubleSide as w, BoxHelper as S, CameraHelper as h, DirectionalLightHelper as C } from "three";
+import * as _ from "tweakpane-plugin-media";
+const B = ':root{--tp-base-font-family: monospace;--tp-base-background-color: hsl(215, 20%, 10%);--tp-base-border-radius: 0px;--tp-button-background-color: hsl(215, 25%, 16%);--tp-button-background-color-hover: hsl(215, 60%, 45%);--tp-button-background-color-focus: hsl(215, 55%, 40%);--tp-button-background-color-active: hsl(215, 55%, 40%);--tp-button-foreground-color: hsl(210, 60%, 95%);--tp-input-background-color: hsl(215, 25%, 16%);--tp-input-background-color-hover: hsl(215, 60%, 45%);--tp-input-background-color-focus: hsl(215, 35%, 34%);--tp-input-background-color-active: hsl(218, 35%, 32%);--tp-input-foreground-color: hsl(210, 50%, 90%);--tp-label-foreground-color: hsl(210, 50%, 90%);--tp-container-background-color: hsl(220, 40%, 5%);--tp-container-background-color-hover: hsl(220, 25%, 10%);--tp-container-background-color-focus: hsl(215, 30%, 14%);--tp-container-background-color-active: hsl(220, 30%, 12%);--tp-container-foreground-color: hsl(210, 40%, 88%);--tp-container-horizontal-padding: 8px;--tp-container-vertical-padding: 8px;--tp-container-unit-size: 20px;--tp-container-unit-spacing: 4px;--tp-groove-foreground-color: hsl(215, 55%, 55%);--tp-monitor-background-color: hsl(218, 25%, 12%);--tp-monitor-foreground-color: hsl(215, 50%, 75%);--tp-blade-border-radius: 4px;--tp-blade-horizontal-padding: 6px;--tp-blade-value-width: 150px}.tp-rotv{padding-bottom:10px}.tp-rotv_m{display:none!important}.tp-p2dv_b,.tp-btnv_b,.tp-lstv_s{font-weight:400!important}#panels-container{position:fixed;top:0;left:0;width:100vw;display:flex;justify-content:space-between;z-index:1000;pointer-events:none;height:100vh}#hierarchy-panel{pointer-events:auto;min-width:200px;max-width:30vw;height:auto;overflow-y:auto;scrollbar-gutter:stable;width:200px}#hierarchy-panel .tp-rotv{background-color:var(--tp-container-background-color)!important}#hierarchy-panel .tp-fldv_c{padding-left:8px!important;padding-top:0!important;padding-bottom:0!important;background-color:var(--tp-container-background-color)!important}#hierarchy-panel .tp-fldv_t{font-weight:400;margin:0!important;background-color:transparent!important;min-height:24px;display:flex!important;align-items:center;padding-left:16px;line-height:1.5}#hierarchy-panel .tp-fldv_c>.tp-btnv:first-child,#hierarchy-panel .tp-fldv_c>.tp-fldv:first-child{margin-top:0!important}#hierarchy-panel .tp-fldv{margin-top:0!important;margin-bottom:0!important;margin-left:0!important}#hierarchy-panel .tp-btnv{margin-top:0!important;margin-bottom:0!important}#hierarchy-panel .tp-lblv.tp-lblv-nol{margin-top:0!important}#hierarchy-panel .tp-fldv_i{display:none!important}#hierarchy-panel .tp-fldv_c>.tp-cntv+*:not(.tp-v-hidden){margin-top:0}#hierarchy-panel .tp-rotv_b{position:sticky;top:0;z-index:1;background-color:var(--tp-base-background-color)}#hierarchy-panel .scene-tree-search{display:block;width:100%;box-sizing:border-box;background-color:var(--tp-input-background-color);color:var(--tp-input-foreground-color);border:none;border-bottom:1px solid hsl(215,20%,18%);outline:none;font-family:var(--tp-base-font-family);font-size:11px;padding:4px 8px;position:sticky;top:calc(var(--tp-container-unit-size) + 4px);z-index:1}#hierarchy-panel .scene-tree-search:focus{background-color:var(--tp-input-background-color-focus)}#hierarchy-panel .scene-tree-search::placeholder{color:#668099}#hierarchy-panel .scene-tree-selected{background-color:var(--tp-button-background-color-active)!important}#hierarchy-panel .scene-tree-selected:hover{background-color:var(--tp-button-background-color-hover)!important}#hierarchy-panel .tp-fldv_b,#hierarchy-panel .tp-btnv_b{border-radius:0!important;padding-right:8px!important;min-height:24px;display:flex!important;align-items:center!important;box-sizing:border-box}#hierarchy-panel .tp-fldv_b{cursor:pointer!important;width:100%!important;text-align:left!important}#hierarchy-panel .tp-btnv_b{padding-left:16px!important;background:none!important;text-align:left}#hierarchy-panel .tp-btnv_b.scene-tree-selected{background-color:var(--tp-button-background-color-active)!important}#hierarchy-panel .tp-fldv_b:hover:not(.scene-tree-selected),#hierarchy-panel .tp-btnv_b:hover:not(.scene-tree-selected){background-color:var(--tp-button-background-color-hover)!important}#hierarchy-panel .tp-fldv_m{position:absolute!important;left:0!important;right:auto!important;top:50%!important;transform:translateY(-50%)!important;cursor:pointer!important;padding:0 12px!important;margin:-1px 0 0!important;background:none!important;display:flex!important;align-items:center!important;justify-content:center!important}#hierarchy-panel .tp-fldv_m svg{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important}#hierarchy-panel .tp-fldv_m:before{font-size:18px;color:var(--tp-label-fg);line-height:1;font-weight:bolder;font-family:monospace;display:block!important;position:relative!important}#hierarchy-panel .tp-fldv.tp-fldv-expanded .tp-fldv_m:before{content:"−"!important}#hierarchy-panel .tp-fldv:not(.tp-fldv-expanded) .tp-fldv_m:before{content:"+"!important}#property-panel{pointer-events:auto;max-height:100vh;overflow-x:hidden;overflow-y:auto;width:300px;align-self:flex-start;scrollbar-gutter:stable;background-color:var(--tp-base-background-color)}#property-panel .tp-rotv{background-color:var(--tp-container-background-color)!important}#property-panel .tp-fldv_b{background-color:var(--tp-base-background-color)!important}#property-panel .tp-fldv_t{text-transform:uppercase;font-weight:700;font-size:12px}#property-panel .tp-lstv_s option{background-color:var(--tp-input-background-color)!important;color:var(--tp-input-foreground-color)!important}#property-panel .tp-p2dv_b{display:none!important}#property-panel .tp-lblv_l{padding-left:0!important}#property-panel .tp-fldv_m{display:none!important}#hierarchy-panel::-webkit-scrollbar,#property-panel::-webkit-scrollbar{width:4px;height:4px}#hierarchy-panel::-webkit-scrollbar-track,#property-panel::-webkit-scrollbar-track{background:var(--tp-container-background-color)}#hierarchy-panel::-webkit-scrollbar-thumb,#property-panel::-webkit-scrollbar-thumb{background:#fff3;border-radius:4px}#hierarchy-panel::-webkit-scrollbar-thumb:hover,#property-panel::-webkit-scrollbar-thumb:hover{background:#ffffff4d}';
 class O {
   constructor(e, n) {
-    this.onSelectionChange = n, this.buttons = /* @__PURE__ */ new Map(), this.selectedObject = null, this.pane = new g({ container: e, title: "Scene Tree" });
+    this.onChange = n, this.element = document.createElement("input"), this.element.type = "text", this.element.placeholder = "Search...", this.element.className = "scene-tree-search";
+    const t = e.querySelector(".tp-rotv_b");
+    t ? t.insertAdjacentElement("afterend", this.element) : e.prepend(this.element), this.element.addEventListener("input", () => {
+      this.onChange(this.element.value.trim());
+    });
+  }
+  dispose() {
+    this.element.remove();
+  }
+}
+class T {
+  constructor(e, n) {
+    this.onSelectionChange = n, this.buttons = /* @__PURE__ */ new Map(), this.selectedObject = null, this.currentScene = null, this.searchQuery = "", this.folderObjects = /* @__PURE__ */ new Set(), this.pane = new u({ container: e, title: "Scene Tree" }), this.search = new O(this.pane.element, (t) => {
+      this.searchQuery = t, this.currentScene && this.rebuildTree();
+    });
   }
   refresh(e) {
-    for (this.buttons.clear(); this.pane.children.length > 0; )
-      this.pane.children[0].dispose();
-    this.lightsFolder = this.pane.addFolder({ title: "Lights " }), this.buildHierarchy(e, this.pane), this.updateSelectionIndicator();
+    this.currentScene = e, this.rebuildTree();
   }
   selectObject(e) {
     this.selectedObject = e, this.updateSelectionIndicator(), this.onSelectionChange(e);
   }
   dispose() {
-    this.pane.dispose();
+    this.search.dispose(), this.pane.dispose();
+  }
+  rebuildTree() {
+    for (this.buttons.clear(), this.folderObjects.clear(); this.pane.children.length > 0; )
+      this.pane.children[0].dispose();
+    this.currentScene && (this.lightsFolder = this.pane.addFolder({ title: "Lights" }), this.buildHierarchy(this.currentScene, this.pane), this.lightsFolder.children.length === 0 && this.lightsFolder.dispose(), this.updateSelectionIndicator());
   }
   buildHierarchy(e, n) {
-    if (this.shouldSkipObject(e))
-      return;
-    const t = this.getChildrenArray(e), i = this.createLabel(e);
-    t.length > 0 ? this.createFolderNode(e, n, i, t) : this.createLeafNode(e, n, i);
+    if (this.shouldSkipObject(e) || this.searchQuery && !this.objectOrDescendantMatches(e)) return;
+    const t = this.getChildrenArray(e), r = this.searchQuery ? t.filter((a) => !this.shouldSkipObject(a) && this.objectOrDescendantMatches(a)) : t, i = this.createLabel(e);
+    if (r.length > 0) {
+      const a = this.searchQuery ? !0 : e.type !== "Bone";
+      this.createFolderNode(e, n, i, r, a);
+    } else
+      this.createLeafNode(e, n, i);
+  }
+  objectOrDescendantMatches(e) {
+    return this.matchesSearch(e) ? !0 : e.children.some((n) => this.objectOrDescendantMatches(n));
+  }
+  matchesSearch(e) {
+    return this.createLabel(e).toLowerCase().includes(this.searchQuery.toLowerCase());
   }
   shouldSkipObject(e) {
     return e.name === "__inspector_bounding_box__";
@@ -30,20 +56,20 @@ class O {
     const n = e.children;
     return n ? [...n] : [];
   }
-  createFolderNode(e, n, t, i) {
-    const a = e.type !== "Bone", r = n.addFolder({ title: t, expanded: a }), o = r.element.querySelector(".tp-fldv_b"), s = r.element.querySelector(".tp-fldv_m");
+  createFolderNode(e, n, t, r, i) {
+    const a = n.addFolder({ title: t, expanded: i }), o = a.element.querySelector(".tp-fldv_b"), s = a.element.querySelector(".tp-fldv_m");
     o?.addEventListener("click", (l) => {
       this.isArrowClick(l.target, s) || (l.stopPropagation(), l.preventDefault(), this.selectObject(e));
-    }, !0), this.buttons.set(e, { title: t, element: r.element });
-    for (const l of i)
-      this.buildHierarchy(l, r);
+    }, !0), this.buttons.set(e, { title: t, element: a.element }), this.folderObjects.add(e);
+    for (const l of r)
+      this.buildHierarchy(l, a);
   }
   isArrowClick(e, n) {
     return n !== null && (e === n || n.contains(e) || e.closest(".tp-fldv_m") === n);
   }
   createLeafNode(e, n, t) {
-    const a = ("isLight" in e && e.isLight ? this.lightsFolder : n).addButton({ title: t });
-    a.on("click", () => this.selectObject(e)), this.buttons.set(e, a);
+    const i = ("isLight" in e && e.isLight ? this.lightsFolder : n).addButton({ title: t });
+    i.on("click", () => this.selectObject(e)), this.buttons.set(e, i);
   }
   createLabel(e) {
     const n = e.constructor.name.replace(/_/g, ""), t = e.name || "";
@@ -51,8 +77,8 @@ class O {
   }
   updateSelectionIndicator() {
     this.buttons.forEach((e, n) => {
-      const t = this.getChildrenArray(n).length > 0 ? e.element.querySelector(".tp-fldv_b") : this.findLeafButtonElement(e.element), i = this.selectedObject === n;
-      t?.classList.toggle("scene-tree-selected", i);
+      const r = this.folderObjects.has(n) ? e.element.querySelector(".tp-fldv_b") : this.findLeafButtonElement(e.element), i = this.selectedObject === n;
+      r?.classList.toggle("scene-tree-selected", i);
     });
   }
   findLeafButtonElement(e) {
@@ -97,7 +123,7 @@ const P = {
       type: "list",
       label: "wrap",
       options: [
-        { text: "RepeatWrapping", value: u },
+        { text: "RepeatWrapping", value: g },
         { text: "ClampToEdgeWrapping", value: b },
         { text: "MirroredRepeatWrapping", value: m }
       ]
@@ -111,7 +137,7 @@ const P = {
     // { path: 'material.map.colorSpace'}
   ]
 };
-class T {
+class F {
   constructor(e) {
     this.onChange = e;
   }
@@ -148,97 +174,97 @@ class T {
       }
   }
   bindNumber(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path), r = this.buildBaseOptions(t);
-    t.min !== void 0 && t.max !== void 0 && (r.min = t.min, r.max = t.max, r.step = t.step !== void 0 ? t.step : void 0), this.addBindingWithCallback(e, i, a, r);
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path), a = this.buildBaseOptions(t);
+    t.min !== void 0 && t.max !== void 0 && (a.min = t.min, a.max = t.max, a.step = t.step !== void 0 ? t.step : void 0), this.addBindingWithCallback(e, r, i, a);
   }
   bindString(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path), r = this.buildBaseOptions(t);
-    this.addBindingWithCallback(e, i, a, r);
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path), a = this.buildBaseOptions(t);
+    this.addBindingWithCallback(e, r, i, a);
   }
   bindBoolean(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path), r = this.buildBaseOptions(t);
-    this.addBindingWithCallback(e, i, a, r);
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path), a = this.buildBaseOptions(t);
+    this.addBindingWithCallback(e, r, i, a);
   }
   bindPoint(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path), r = t.min !== void 0 ? t.min : -2e3, o = t.max !== void 0 ? t.max : 2e3, s = t.step !== void 0 ? t.step : void 0, l = {
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path), a = t.min !== void 0 ? t.min : -2e3, o = t.max !== void 0 ? t.max : 2e3, s = t.step !== void 0 ? t.step : void 0, l = {
       ...this.buildBaseOptions(t),
-      x: { min: r, max: o, step: s },
-      y: { min: r, max: o, step: s }
+      x: { min: a, max: o, step: s },
+      y: { min: a, max: o, step: s }
     };
-    this.addBindingWithCallback(e, i, a, l);
+    this.addBindingWithCallback(e, r, i, l);
   }
   bindColor(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path), r = {
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path), a = {
       ...this.buildBaseOptions(t),
       view: "color"
     };
-    if (typeof i[a] == "object") {
+    if (typeof r[i] == "object") {
       const o = {
-        [a]: `#${i[a].getHexString()}`
+        [i]: `#${r[i].getHexString()}`
       };
-      e.addBinding(o, a, r).on("change", (s) => {
-        i[a].set(s.value), this.onChange(a);
+      e.addBinding(o, i, a).on("change", (s) => {
+        r[i].set(s.value), this.onChange(i);
       });
       return;
     }
-    this.addBindingWithCallback(e, i, a, r);
+    this.addBindingWithCallback(e, r, i, a);
   }
   bindList(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path), r = this.buildBaseOptions(t);
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path), a = this.buildBaseOptions(t);
     if (t.options && t.options.length > 0) {
       const s = typeof t.options[0] == "string" ? t.options.map((l) => ({ text: l, value: l })) : t.options;
-      r.options = s.reduce((l, c) => (l[c.text] = c.value, l), {});
+      a.options = s.reduce((l, c) => (l[c.text] = c.value, l), {});
     }
-    const o = this.addBindingWithCallback(e, i, a, r);
-    (a === "wrapS" || a === "wrapT") && o.on("change", (s) => {
-      i.wrapS = s.value, i.wrapT = s.value, i.needsUpdate = !0;
+    const o = this.addBindingWithCallback(e, r, i, a);
+    (i === "wrapS" || i === "wrapT") && o.on("change", (s) => {
+      r.wrapS = s.value, r.wrapT = s.value, r.needsUpdate = !0;
     });
   }
   bindReadonly(e, n, t) {
-    const i = t.path.split(".").pop() || t.path;
-    let a = this.getValueFromPath(n, t.path);
-    t.path === "name" && !a && (a = "(unnamed)");
-    const r = {
+    const r = t.path.split(".").pop() || t.path;
+    let i = this.getValueFromPath(n, t.path);
+    t.path === "name" && !i && (i = "(unnamed)");
+    const a = {
       ...this.buildBaseOptions(t),
       readonly: !0
     };
-    e.addBinding({ [i]: a }, i, r);
+    e.addBinding({ [r]: i }, r, a);
   }
   bingImage(e, n, t) {
-    const { target: i, key: a } = this.getTargetAndKey(n, t.path);
-    i[a] && e.addBinding(i, a, {
+    const { target: r, key: i } = this.getTargetAndKey(n, t.path);
+    r[i] && e.addBinding(r, i, {
       label: t.label ?? "Image",
       view: "texture",
       height: 80
     });
   }
   getTargetAndKey(e, n) {
-    const t = n.split("."), i = this.getValueFromPath(e, n, !0), a = t[t.length - 1];
-    return { target: i, key: a };
+    const t = n.split("."), r = this.getValueFromPath(e, n, !0), i = t[t.length - 1];
+    return { target: r, key: i };
   }
   getValueFromPath(e, n, t = !1) {
-    const i = n.split("."), a = t ? i.length - 1 : i.length;
-    let r = e;
-    for (let o = 0; o < a; o++)
-      r = r?.[i[o]];
-    return r;
+    const r = n.split("."), i = t ? r.length - 1 : r.length;
+    let a = e;
+    for (let o = 0; o < i; o++)
+      a = a?.[r[o]];
+    return a;
   }
   buildBaseOptions(e) {
     const n = { needsUpdate: e.needsUpdate ?? !1 };
     return e.label && (n.label = e.label), n;
   }
-  addBindingWithCallback(e, n, t, i) {
-    const a = e.addBinding(n, t, i);
-    return a.on("change", (r) => {
-      this.onChange(t), i.needsUpdate && (n.needsUpdate = !0);
-    }), a;
+  addBindingWithCallback(e, n, t, r) {
+    const i = e.addBinding(n, t, r);
+    return i.on("change", (a) => {
+      this.onChange(t), r.needsUpdate && (n.needsUpdate = !0);
+    }), i;
   }
   propertyExists(e, n) {
     const t = n.split(".");
-    let i = e;
-    for (let a = 0; a < t.length - 1; a++)
-      if (i = i?.[t[a]], i == null) return !1;
-    return i != null && t[t.length - 1] in i;
+    let r = e;
+    for (let i = 0; i < t.length - 1; i++)
+      if (r = r?.[t[i]], r == null) return !1;
+    return r != null && t[t.length - 1] in r;
   }
 }
 class E {
@@ -246,8 +272,8 @@ class E {
     this.scene = e, this.helpers = /* @__PURE__ */ new Map();
   }
   addHelperToggles(e, n) {
-    this.helperDescriptors(n).forEach(({ label: t, createFn: i }) => {
-      this.addHelperToggle(e, t, n, i);
+    this.helperDescriptors(n).forEach(({ label: t, createFn: r }) => {
+      this.addHelperToggle(e, t, n, r);
     });
   }
   update() {
@@ -262,7 +288,7 @@ class E {
     switch (e.type) {
       case "DirectionalLight": {
         const n = e, t = [
-          { label: "Light Helper", createFn: () => new S(n, 1) }
+          { label: "Light Helper", createFn: () => new C(n, 1) }
         ];
         return n.castShadow && t.push({ label: "Shadow Camera", createFn: () => new h(n.shadow.camera) }), t;
       }
@@ -270,30 +296,30 @@ class E {
       case "PerspectiveCamera":
         return [{ label: "Camera", createFn: () => new h(e) }];
       default:
-        return [{ label: "Box", createFn: () => new C(e) }];
+        return [{ label: "Box", createFn: () => new S(e) }];
     }
   }
   helperKey(e, n) {
     return `${e.uuid}-${n}`;
   }
   enable(e, n, t) {
-    const i = this.helperKey(e, n), a = t();
-    this.scene.add(a), this.helpers.set(i, a);
+    const r = this.helperKey(e, n), i = t();
+    this.scene.add(i), this.helpers.set(r, i);
   }
   disable(e, n) {
-    const t = this.helperKey(e, n), i = this.helpers.get(t);
-    i && (this.scene.remove(i), i.dispose(), this.helpers.delete(t));
+    const t = this.helperKey(e, n), r = this.helpers.get(t);
+    r && (this.scene.remove(r), r.dispose(), this.helpers.delete(t));
   }
-  addHelperToggle(e, n, t, i) {
-    const a = this.helperKey(t, n), r = { show: this.helpers.has(a) };
-    e.addBinding(r, "show", { label: n }).on("change", (s) => {
-      s.value ? this.enable(t, n, i) : this.disable(t, n);
+  addHelperToggle(e, n, t, r) {
+    const i = this.helperKey(t, n), a = { show: this.helpers.has(i) };
+    e.addBinding(a, "show", { label: n }).on("change", (s) => {
+      s.value ? this.enable(t, n, r) : this.disable(t, n);
     });
   }
 }
-class F {
+class L {
   constructor(e, n) {
-    this.folders = /* @__PURE__ */ new Map(), this.selectedObject = null, this.propertiesTriggeringRefresh = [], this.propertiesTriggeringRebuild = ["castShadow"], this.isRefreshing = !1, this.pane = new g({ container: e, title: "Properties" }), this.pane.registerPlugin(B), this.helperManager = new E(n), this.propertyBinder = new T((t) => {
+    this.folders = /* @__PURE__ */ new Map(), this.selectedObject = null, this.propertiesTriggeringRefresh = [], this.propertiesTriggeringRebuild = ["castShadow"], this.isRefreshing = !1, this.pane = new u({ container: e, title: "Properties" }), this.pane.registerPlugin(_), this.helperManager = new E(n), this.propertyBinder = new F((t) => {
       this.isRefreshing || (this.propertiesTriggeringRefresh.includes(t) && this.pane.refresh(), this.propertiesTriggeringRebuild.includes(t) && setTimeout(() => this.refresh(), 0));
     });
   }
@@ -315,10 +341,10 @@ class F {
   }
   addProperies(e) {
     for (const [n, t] of Object.entries(P)) {
-      const i = this.pane.addFolder({ title: n, expanded: !0 });
-      for (const a of t)
-        this.propertyBinder.bind(i, e, a);
-      i.children.length === 0 ? i.dispose() : this.folders.set(n, i);
+      const r = this.pane.addFolder({ title: n, expanded: !0 });
+      for (const i of t)
+        this.propertyBinder.bind(r, e, i);
+      r.children.length === 0 ? r.dispose() : this.folders.set(n, r);
     }
   }
   addHelpersFolder(e) {
@@ -334,13 +360,13 @@ let d = !1;
 function R() {
   if (d) return;
   const p = document.createElement("style");
-  p.textContent = _, document.head.appendChild(p), d = !0;
+  p.textContent = B, document.head.appendChild(p), d = !0;
 }
-class A {
+class K {
   constructor(e) {
     this.panelsContainer = null, R(), this.scene = e;
     const { hierarchyContainer: n, propertyContainer: t } = this.createPanelContainers();
-    this.hierarchyPanel = new O(n, this.onObjectSelected.bind(this)), this.propertyPanel = new F(t, this.scene), this.refresh();
+    this.hierarchyPanel = new T(n, this.onObjectSelected.bind(this)), this.propertyPanel = new L(t, this.scene), this.refresh();
   }
   createPanelContainers() {
     const e = document.createElement("div");
@@ -368,9 +394,9 @@ class A {
 }
 export {
   P as CATEGORIES,
-  T as PropertyBinder,
-  F as PropertyInspectorPanel,
-  O as SceneHierarchyPanel,
-  A as ThreeSceneInspector
+  F as PropertyBinder,
+  L as PropertyInspectorPanel,
+  T as SceneHierarchyPanel,
+  K as ThreeSceneInspector
 };
 //# sourceMappingURL=three-scene-inspector.es.js.map

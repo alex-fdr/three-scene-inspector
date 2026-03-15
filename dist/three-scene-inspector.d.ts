@@ -84,11 +84,18 @@ export declare class SceneHierarchyPanel {
     lightsFolder: FolderApi;
     buttons: Map<Object3D, ButtonApi>;
     selectedObject: Object3D | null;
+    private currentScene;
+    private searchQuery;
+    private search;
+    private folderObjects;
     constructor(container: HTMLElement, onSelectionChange: ObjectSelectionHandler);
     refresh(scene: Scene): void;
     selectObject(obj: Object3D): void;
     dispose(): void;
+    private rebuildTree;
     private buildHierarchy;
+    private objectOrDescendantMatches;
+    private matchesSearch;
     private shouldSkipObject;
     private getChildrenArray;
     private createFolderNode;
