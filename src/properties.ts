@@ -13,7 +13,7 @@ export type PropertyInfo = {
   needsUpdate?: boolean;
 }
 
-export const CATEGORIES: CategorizedProperties = {
+export const DEFAULT_PROPERTIES: CategorizedProperties = {
   Object: [
     // { path: 'name', type: 'readonly' },
     

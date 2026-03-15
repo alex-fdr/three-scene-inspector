@@ -1,5 +1,5 @@
 import { Pane, FolderApi } from 'tweakpane';
-import { CATEGORIES } from './properties';
+import { DEFAULT_PROPERTIES, CategorizedProperties, Category, PropertyInfo } from './properties';
 import { PropertyBinder } from './PropertyBinder';
 import { Object3D, Scene } from 'three';
 import * as TweakpanePluginMedia from 'tweakpane-plugin-media';
@@ -14,6 +14,8 @@ export class PropertyInspectorPanel {
   private propertiesTriggeringRefresh: string[] = [];
   private propertiesTriggeringRebuild: string[] = ['castShadow'];
   private isRefreshing = false;
+  private extraProperties: CategorizedProperties = {};
+  private overriddenProperties: CategorizedProperties = {};
 
   constructor(container: HTMLElement, scene: Scene) {
     this.pane = new Pane({ container, title: 'Properties' });
@@ -34,6 +36,15 @@ export class PropertyInspectorPanel {
         setTimeout(() => this.refresh(), 0);
       }
     });
+  }
+
+  addProperties(category: Category, properties: PropertyInfo[]): void {
+    const existing = this.extraProperties[category] ?? [];
+    this.extraProperties[category] = [...existing, ...properties];
+  }
+
+  overrideProperties(category: Category, properties: PropertyInfo[]): void {
+    this.overriddenProperties[category] = properties;
   }
 
   setSelectedObject(obj: Object3D | null): void {
@@ -57,10 +68,6 @@ export class PropertyInspectorPanel {
     this.isRefreshing = false;
   }
 
-  update(): void {
-    this.helperManager.update();
-  }
-
   dispose(): void {
     this.clearBindings();
     this.pane.dispose();
@@ -68,8 +75,12 @@ export class PropertyInspectorPanel {
   }
 
   private addProperies(obj: Object3D): void {
-    for (const [categoryName, properties] of Object.entries(CATEGORIES)) {
-      const folder = this.pane.addFolder({ title: categoryName, expanded: true });
+    for (const key of Object.keys(DEFAULT_PROPERTIES) as Category[]) {
+      const base = this.overriddenProperties[key] ?? DEFAULT_PROPERTIES[key] ?? [];
+      const extra = this.extraProperties[key] ?? [];
+      const properties = [...base, ...extra];
+
+      const folder = this.pane.addFolder({ title: key, expanded: true });
 
       for (const property of properties) {
         this.propertyBinder.bind(folder, obj, property);
@@ -78,7 +89,7 @@ export class PropertyInspectorPanel {
       if (folder.children.length === 0) {
         folder.dispose();
       } else {
-        this.folders.set(categoryName, folder);
+        this.folders.set(key, folder);
       }
     }
   }

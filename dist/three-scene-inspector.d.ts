@@ -4,11 +4,11 @@ import { Object3D } from 'three';
 import { Pane } from 'tweakpane';
 import { Scene } from 'three';
 
-export declare const CATEGORIES: CategorizedProperties;
-
 export declare type CategorizedProperties = Partial<Record<Category, PropertyInfo[]>>;
 
-declare type Category = 'Object' | 'Transform' | 'Material' | 'Texture' | 'Shadow';
+export declare type Category = 'Object' | 'Transform' | 'Material' | 'Texture' | 'Shadow';
+
+export declare const DEFAULT_PROPERTIES: CategorizedProperties;
 
 declare class HelperManager {
     private scene;
@@ -68,10 +68,13 @@ export declare class PropertyInspectorPanel {
     private propertiesTriggeringRefresh;
     private propertiesTriggeringRebuild;
     private isRefreshing;
+    private extraProperties;
+    private overriddenProperties;
     constructor(container: HTMLElement, scene: Scene);
+    addProperties(category: Category, properties: PropertyInfo[]): void;
+    overrideProperties(category: Category, properties: PropertyInfo[]): void;
     setSelectedObject(obj: Object3D | null): void;
     refresh(): void;
-    update(): void;
     dispose(): void;
     private addProperies;
     private addHelpersFolder;
@@ -110,18 +113,20 @@ export declare class SceneHierarchyPanel {
 }
 
 export declare class ThreeSceneInspector {
-    scene: Scene;
-    hierarchyPanel: SceneHierarchyPanel;
-    propertyPanel: PropertyInspectorPanel;
-    panelsContainer: HTMLElement | null;
+    private scene;
+    private hierarchyPanel;
+    private propertyPanel;
+    private panelsContainer;
     constructor(scene: Scene);
     private createPanelContainers;
+    private onObjectSelected;
     refresh(): void;
     update(): void;
     selectObject(obj: Object3D): void;
     excludeFromTree(...labels: string[]): void;
+    addProperties(category: Category, properties: PropertyInfo[]): void;
+    overrideProperties(category: Category, properties: PropertyInfo[]): void;
     dispose(): void;
-    private onObjectSelected;
 }
 
 export { }

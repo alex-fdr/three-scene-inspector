@@ -2,6 +2,7 @@ import styles from './styles.css?inline';
 import { Object3D, Scene } from 'three';
 import { SceneHierarchyPanel } from './SceneHierarchyPanel';
 import { PropertyInspectorPanel } from './PropertyInspectorPanel';
+import { Category, PropertyInfo } from './properties';
 
 // Inject styles into the document
 let stylesInjected = false;
@@ -14,18 +15,14 @@ function injectStyles() {
 }
 
 export class ThreeSceneInspector {
-  scene: Scene;
-  hierarchyPanel: SceneHierarchyPanel;
-  propertyPanel: PropertyInspectorPanel;
-  panelsContainer: HTMLElement | null = null;
+  private hierarchyPanel: SceneHierarchyPanel;
+  private propertyPanel: PropertyInspectorPanel;
+  private panelsContainer: HTMLElement | null = null;
 
-  constructor(scene: Scene) {
+  constructor(private scene: Scene) {
     injectStyles();
 
-    this.scene = scene;
-
     const { hierarchyContainer, propertyContainer } = this.createPanelContainers();
-
     this.hierarchyPanel = new SceneHierarchyPanel(hierarchyContainer, this.onObjectSelected.bind(this));
     this.propertyPanel = new PropertyInspectorPanel(propertyContainer, this.scene);
 
@@ -33,18 +30,15 @@ export class ThreeSceneInspector {
   }
 
   private createPanelContainers(): { hierarchyContainer: HTMLElement; propertyContainer: HTMLElement } {
-    // Create panels container
     const panelsContainer = document.createElement('div');
     panelsContainer.id = 'panels-container';
     document.body.appendChild(panelsContainer);
     this.panelsContainer = panelsContainer;
 
-    // Create hierarchy panel
     const hierarchyContainer = document.createElement('div');
     hierarchyContainer.id = 'hierarchy-panel';
     panelsContainer.appendChild(hierarchyContainer);
 
-    // Create property panel
     const propertyContainer = document.createElement('div');
     propertyContainer.id = 'property-panel';
     panelsContainer.appendChild(propertyContainer);
@@ -52,12 +46,16 @@ export class ThreeSceneInspector {
     return { hierarchyContainer, propertyContainer };
   }
 
+  private onObjectSelected(obj: Object3D): void {
+    this.propertyPanel.setSelectedObject(obj);
+  }
+
   refresh(): void {
     this.hierarchyPanel.refresh(this.scene);
   }
 
   update(): void {
-    this.propertyPanel.update();
+    this.propertyPanel.helperManager.update();
   }
 
   selectObject(obj: Object3D): void {
@@ -68,24 +66,26 @@ export class ThreeSceneInspector {
     this.hierarchyPanel.excludeFromTree(...labels);
   }
 
+  addProperties(category: Category, properties: PropertyInfo[]): void {
+    this.propertyPanel.addProperties(category, properties);
+  }
+
+  overrideProperties(category: Category, properties: PropertyInfo[]): void {
+    this.propertyPanel.overrideProperties(category, properties);
+  }
+
   dispose(): void {
     this.hierarchyPanel.dispose();
     this.propertyPanel.dispose();
 
-    // Clean up auto-created panels container
     if (this.panelsContainer?.parentNode) {
       this.panelsContainer.parentNode.removeChild(this.panelsContainer);
       this.panelsContainer = null;
     }
   }
-
-  private onObjectSelected(obj: Object3D): void {
-    this.propertyPanel.setSelectedObject(obj);
-  }
 }
 
-// Export everything that might be useful
 export { SceneHierarchyPanel } from './SceneHierarchyPanel';
 export { PropertyInspectorPanel } from './PropertyInspectorPanel';
-export { CATEGORIES, type CategorizedProperties, type PropertyInfo } from './properties';
+export { DEFAULT_PROPERTIES, type CategorizedProperties, type Category, type PropertyInfo } from './properties';
 export { PropertyBinder } from './PropertyBinder';
