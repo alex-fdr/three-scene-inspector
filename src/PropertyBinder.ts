@@ -1,7 +1,7 @@
 import { FolderApi } from 'tweakpane';
 import { PropertyInfo } from './properties';
 import { Object3D } from 'three';
-import { BindingApi, BindingParams, TpChangeEvent } from '@tweakpane/core';
+import { BindingApi, BindingParams } from '@tweakpane/core';
 
 export class PropertyBinder {
   constructor(private onChange: (key: string) => void) {}
@@ -32,7 +32,7 @@ export class PropertyBinder {
         this.bindReadonly(folder, obj, property);
         break;
       case 'image':
-        this.bingImage(folder, obj, property);
+        this.bindImage(folder, obj, property);
         break;
       default:
         this.bindString(folder, obj, property);
@@ -42,157 +42,97 @@ export class PropertyBinder {
 
   private bindNumber(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
-    const options = this.buildBaseOptions(property);
-
-    if (property.min !== undefined && property.max !== undefined) {
-      options.min = property.min;
-      options.max = property.max;
-      options.step = property.step !== undefined ? property.step : undefined;
-    }
-
-    this.addBindingWithCallback(folder, target, key, options);
+    this.addBindingWithCallback(folder, target, key, property);
   }
 
   private bindString(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
-    const options = this.buildBaseOptions(property);
-    this.addBindingWithCallback(folder, target, key, options);
+    this.addBindingWithCallback(folder, target, key, property);
   }
 
   private bindBoolean(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
-    const options = this.buildBaseOptions(property);
-    this.addBindingWithCallback(folder, target, key, options);
+    this.addBindingWithCallback(folder, target, key, property);
   }
 
   private bindPoint(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
-
-    const min = property.min !== undefined ? property.min : -2000;
-    const max = property.max !== undefined ? property.max : 2000;
-    const step = property.step !== undefined ? property.step : undefined;
-
-    const options = {
-      ...this.buildBaseOptions(property),
-      x: { min, max, step },
-      y: { min, max, step },
-    };
-
-    this.addBindingWithCallback(folder, target, key, options);
+    this.addBindingWithCallback(folder, target, key, property);
   }
 
   private bindColor(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
-    
-    const options = { 
-      ...this.buildBaseOptions(property), 
-      view: 'color',
-    };
 
     if (typeof target[key] === 'object') {
-      const colorObj = { 
-        [key]: `#${target[key].getHexString()}` 
-      };
-
-      folder.addBinding(colorObj, key, options).on('change', (event) => {
+      const colorObj = { [key]: `#${target[key].getHexString()}` };
+      folder.addBinding(colorObj, key, { label: property.label, view: 'color' }).on('change', (event) => {
         target[key].set(event.value);
         this.onChange(key);
       });
-      
       return;
     }
 
-    this.addBindingWithCallback(folder, target, key, options);
+    this.addBindingWithCallback(folder, target, key, property, { view: 'color' });
   }
 
   private bindList(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
-    const options = this.buildBaseOptions(property);
 
-    if (property.options && property.options.length > 0) {
-      // Support both array of objects {text, value} and plain string arrays
-      const normalized = typeof property.options[0] === 'string'
-        ? (property.options as string[]).map(str => ({ text: str, value: str }))
-        : property.options as { text: string; value: any }[];
+    const normalized = property.options?.length
+      ? (typeof property.options[0] === 'string'
+          ? (property.options as string[]).map(str => ({ text: str, value: str }))
+          : property.options as { text: string; value: any }[])
+      : [];
 
-      options.options = normalized.reduce((acc, opt) => {
-        acc[opt.text] = opt.value;
-        return acc;
-      }, {} as Record<string, any>);
-    }
+    const listOptions = normalized.reduce((acc, opt) => {
+      acc[opt.text] = opt.value;
+      return acc;
+    }, {} as Record<string, any>);
 
-    const binding = this.addBindingWithCallback(folder, target, key, options);
-
-    // special case to handle two update two properties at once
     if (key === 'wrapS' || key === 'wrapT') {
-      binding.on('change', (event) => {
+      folder.addBinding(target, key, { label: property.label, options: listOptions }).on('change', (event) => {
         target.wrapS = event.value;
         target.wrapT = event.value;
         target.needsUpdate = true;
-      })
+        this.onChange(key);
+      });
+    } else {
+      this.addBindingWithCallback(folder, target, key, property, { options: listOptions });
     }
   }
 
   private bindReadonly(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
-    const name = property.path.split('.').pop() || property.path;
-    let value = this.getValueFromPath(obj, property.path);
+    const { target, key } = this.getTargetAndKey(obj, property.path);
+    let value = target[key];
 
     // Special case: show '(unnamed)' for empty name property
     if (property.path === 'name' && !value) {
       value = '(unnamed)';
     }
 
-    const options = { 
-      ...this.buildBaseOptions(property), 
-      readonly: true 
-    };
-    
-    folder.addBinding({ [name]: value }, name, options);
+    folder.addBinding({ [key]: value }, key, { label: property.label, readonly: true });
   }
 
-  private bingImage(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
+  private bindImage(folder: FolderApi, obj: Object3D, property: PropertyInfo): void {
     const { target, key } = this.getTargetAndKey(obj, property.path);
     
     if (!target[key]) return;
 
     folder.addBinding(target, key, {
-      label: property.label ?? 'Image',
+      label: property.label,
       view: 'texture',
       height: 80,
     });
   }
-
-  private getTargetAndKey(obj: Object3D, path: string): { target: any; key: string } {
-    const parts = path.split('.');
-    const target = this.getValueFromPath(obj, path, true);
-    const key = parts[parts.length - 1];
-    return { target, key };
-  }
   
-  private getValueFromPath(obj: any, path: string, excludeLast = false): any {
-    const parts = path.split('.');
-    const length = excludeLast ? parts.length - 1 : parts.length;
-    let current = obj;
-    for (let i = 0; i < length; i++) {
-      current = current?.[parts[i]];
-    }
-    return current;
-  }
-
-  private buildBaseOptions(property: PropertyInfo): any {
-    const options: BindingParams = { needsUpdate: property.needsUpdate ?? false }
-    if (property.label) {
-      options.label = property.label;
-    }
-    return options;
-  }
-
-  private addBindingWithCallback(folder: FolderApi, target: any, key: string, options: any): BindingApi<unknown> {
+  private addBindingWithCallback(folder: FolderApi, target: any, key: string, property: PropertyInfo, extra: BindingParams = {}): BindingApi<unknown> {
+    const { needsUpdate, label, min, max, step } = property;
+    const options = { label, min, max, step, ...extra };
     const binding = folder.addBinding(target, key, options);
 
-    binding.on('change', (event) => {
+    binding.on('change', () => {
       this.onChange(key);
-      if (options.needsUpdate) {
+      if (needsUpdate) {
         target.needsUpdate = true;
       }
     });
@@ -200,14 +140,18 @@ export class PropertyBinder {
     return binding;
   }
 
-  private propertyExists(obj: any, path: string): boolean {
+  private getTargetAndKey(obj: Object3D, path: string): { target: any; key: string } {
     const parts = path.split('.');
-    let current = obj;
+    const key = parts[parts.length - 1];
+    let target: any = obj;
     for (let i = 0; i < parts.length - 1; i++) {
-      current = current?.[parts[i]];
-      if (current == null) return false;
+      target = target?.[parts[i]];
     }
-    return current != null && parts[parts.length - 1] in current;
+    return { target, key };
   }
-
+  
+  private propertyExists(obj: Object3D, path: string): boolean {
+    const { target, key } = this.getTargetAndKey(obj, path);
+    return target != null && key in target;
+  }
 }
