@@ -1,6 +1,6 @@
 {
   "name": "@alexfdr/three-scene-inspector",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A debugging tool that displays a Three.js scene hierarchy with an interactive property inspector using Tweakpane",
   "license": "ISC",
   "author": "alexfdr",
