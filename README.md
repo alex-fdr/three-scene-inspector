@@ -2,8 +2,6 @@
 
 A debugging tool for Three.js that displays the scene hierarchy and editable object properties using Tweakpane.
 
-![Screenshot](docs/screenshot.png)
-
 ## Requirements
 
 - three.js `^0.169.0`
@@ -60,6 +58,10 @@ npm install
 npm run dev    # Start dev server at http://localhost:5173/
 npm run build  # Build library
 ```
+
+## Screenshot
+
+![Screenshot](docs/screenshot.png)
 
 ## License
 
